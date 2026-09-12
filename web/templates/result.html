@@ -1,0 +1,35 @@
+{{define "title"}}Paste created{{end}}
+{{define "content"}}
+<h1>Paste created</h1>
+{{if .Burn}}
+<p class="notice" role="alert">
+	<strong>Burn after read:</strong> this paste will be destroyed immediately after the first view. Save the links below now &mdash; they will only work once.
+</p>
+{{end}}
+<div class="stack">
+	<div class="field">
+		<label for="share-url">Share URL</label>
+		<div class="row">
+			<input id="share-url" type="text" readonly value="{{.ShareURL}}">
+			<button type="button" data-copy="{{.ShareURL}}">Copy</button>
+		</div>
+	</div>
+	<div class="field">
+		<label for="raw-url">Raw URL</label>
+		<div class="row">
+			<input id="raw-url" type="text" readonly value="{{.RawURL}}">
+			<button type="button" data-copy="{{.RawURL}}">Copy</button>
+		</div>
+	</div>
+	<div class="field">
+		<label for="delete-token">Delete token</label>
+		<div class="row">
+			<input id="delete-token" type="text" readonly value="{{.Token}}">
+			<button type="button" data-copy="{{.Token}}">Copy</button>
+		</div>
+		<p class="hint">The delete token is shown <strong>only this once</strong>. Save it if you
+		might want to delete the paste later.</p>
+	</div>
+</div>
+<p class="cta"><a class="button primary" href="/{{.ID}}">View paste</a></p>
+{{end}}

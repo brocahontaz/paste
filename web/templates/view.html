@@ -1,0 +1,39 @@
+{{define "title"}}Paste {{.ID}}{{end}}
+{{define "content"}}
+<div class="paste-head">
+	<h1>Paste <code class="paste-id">{{.ID}}</code></h1>
+	<div class="paste-meta">
+		<span class="badge">{{.FormatLabel}}</span>
+		{{if eq .Format "code"}}<span class="badge">{{.LanguageLabel}}</span>{{end}}
+		<span class="badge badge-muted">{{.ExpiryLabel}}</span>
+		{{if .Burn}}<span class="badge badge-warn">Burn after read</span>{{end}}
+	</div>
+</div>
+{{if .Burn}}
+<p class="notice" role="alert"><strong>This paste will be destroyed after this view.</strong>
+Copy anything you want to keep now.</p>
+{{end}}
+<div class="paste-actions">
+	<button type="button" data-copy-src="paste-content">Copy content</button>
+	<button type="button" data-copy="{{.RawURL}}">Copy raw URL</button>
+	<a class="button" href="{{.RawURL}}">Raw view</a>
+</div>
+{{if eq .Format "markdown"}}
+	<article class="rendered markdown-body">{{.Rendered}}</article>
+	<div id="paste-content" hidden>{{.Content}}</div>
+{{else if eq .Format "code"}}
+	<pre class="code-view"><code id="paste-content" class="hljs{{if .Language}} language-{{.Language}}{{end}}">{{.Content}}</code></pre>
+{{else}}
+	<pre class="text-view" id="paste-content">{{.Content}}</pre>
+{{end}}
+<details class="danger-zone">
+	<summary>Delete this paste</summary>
+	<form method="post" action="/{{.ID}}/delete" class="stack">
+		<div class="field">
+			<label for="token">Delete token</label>
+			<input id="token" name="token" type="text" autocomplete="off" required>
+		</div>
+		<button type="submit" class="danger">Delete permanently</button>
+	</form>
+</details>
+{{end}}

@@ -1,0 +1,12 @@
+{{define "title"}}Delete paste {{.ID}}{{end}}
+{{define "content"}}
+<h1>Delete paste <code class="paste-id">{{.ID}}</code></h1>
+<p>Are you sure you want to permanently delete this paste? This cannot be undone.</p>
+<form method="post" action="/{{.ID}}/delete" class="stack">
+	<input type="hidden" name="token" value="{{.Token}}">
+	<div class="row">
+		<button type="submit" class="danger">Yes, delete it</button>
+		<a class="button" href="/{{.ID}}">Cancel</a>
+	</div>
+</form>
+{{end}}

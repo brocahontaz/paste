@@ -1,0 +1,40 @@
+{{define "title"}}New paste{{end}}
+{{define "content"}}
+<h1>New paste</h1>
+<form method="post" action="/" id="create-form" class="stack">
+	<div class="field">
+		<label for="content">Content</label>
+		<textarea id="content" name="content" rows="14" spellcheck="false" required autofocus></textarea>
+	</div>
+	<div class="grid">
+		<div class="field">
+			<label for="format">Format</label>
+			<select id="format" name="format">
+				{{range .Formats}}<option value="{{.Value}}"{{if .Selected}} selected{{end}}>{{.Label}}</option>{{end}}
+			</select>
+		</div>
+		<div class="field">
+			<label for="language">Language</label>
+			<select id="language" name="language">
+				{{range .Languages}}<option value="{{.Value}}"{{if .Selected}} selected{{end}}>{{.Label}}</option>{{end}}
+			</select>
+		</div>
+		<div class="field">
+			<label for="expiry">Expires</label>
+			<select id="expiry" name="expiry">
+				<option value="1h">1 hour</option>
+				<option value="1d">1 day</option>
+				<option value="7d" selected>7 days</option>
+				<option value="30d">30 days</option>
+				<option value="never">Never</option>
+			</select>
+		</div>
+	</div>
+	<label class="checkbox">
+		<input type="checkbox" name="burn" value="1">
+		Burn after read &mdash; destroy the paste after the first view
+	</label>
+	<button type="submit">Create paste</button>
+	<p class="hint">Tip: press Ctrl+Enter to submit.</p>
+</form>
+{{end}}

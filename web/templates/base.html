@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="robots" content="noindex, nofollow">
+	<meta name="referrer" content="no-referrer">
+	<title>{{block "title" .}}paste{{end}}</title>
+	<link rel="icon" href="data:,">
+	<link rel="stylesheet" href="/static/style.css">
+	<script src="/static/app.js" defer></script>
+	{{block "extra-head" .}}{{end}}
+</head>
+<body>
+	<header class="site-header">
+		<a class="brand" href="/">paste</a>
+	</header>
+	<main class="container">
+		{{block "content" .}}{{end}}
+	</main>
+	<footer class="site-footer">
+		<p><a href="/">New paste</a></p>
+	</footer>
+	<div id="copy-status" class="visually-hidden" aria-live="polite"></div>
+</body>
+</html>
