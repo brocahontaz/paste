@@ -1,10 +1,14 @@
 # Build stage: compile a fully static binary with all assets embedded.
+# TARGETOS/TARGETARCH are set by buildx for multi-platform builds, so CI
+# cross-compiles instead of emulating; they are empty for plain local builds.
 FROM golang:1.27-alpine AS build
+ARG TARGETOS
+ARG TARGETARCH
 WORKDIR /src
 COPY go.mod go.sum ./
 RUN go mod download
 COPY . .
-RUN CGO_ENABLED=0 GOOS=linux go build -trimpath -ldflags="-s -w" -o /out/paste ./cmd/paste \
+RUN CGO_ENABLED=0 GOOS="${TARGETOS:-linux}" GOARCH="${TARGETARCH:-amd64}" go build -trimpath -ldflags="-s -w" -o /out/paste ./cmd/paste \
 	# A data dir owned by uid 65532 so the runtime nonroot user can write the
 	# database into the /data volume created from it.
 	&& mkdir -p /out/data \
