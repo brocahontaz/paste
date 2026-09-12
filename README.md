@@ -1,5 +1,7 @@
 # paste
 
+[![CI](https://github.com/brocahontaz/paste/actions/workflows/ci.yml/badge.svg)](https://github.com/brocahontaz/paste/actions/workflows/ci.yml)
+
 A lightweight, anonymous paste service in pure Go. No accounts, no tracking,
 no JavaScript frameworks — create a paste, share the link, delete it with the
 one-time token you received at creation time.
@@ -74,6 +76,8 @@ their rate-limit identity.
 
 ## Docker deployment
 
+Local build and run:
+
 ```sh
 docker compose up -d --build
 curl http://localhost:8080/healthz
@@ -83,6 +87,35 @@ The image is a distroless static binary running as nonroot with an exec-form
 `HEALTHCHECK` (`/paste healthcheck`). Compose persists the database in the
 `paste-data` volume mounted at `/data` (`PASTE_DB_PATH=/data/paste.db`) and
 restarts the container unless it was stopped explicitly.
+
+## CI/CD
+
+GitHub Actions (`.github/workflows/ci.yml`) runs on every push to `main`,
+pull request, version tag (`v*`), and manual dispatch:
+
+1. **Vet & test** — `go vet` and `go test ./...`.
+2. **Build & push** (main/tags/manual only, after tests pass) — a
+   multi-platform (`linux/amd64`, `linux/arm64`) image is built and pushed to
+   `ghcr.io/brocahontaz/paste`, tagged `latest` (default branch), the branch
+   or tag name, semver (`1.2.3`, `1.2`), and the short commit SHA.
+
+## Deploying to a host
+
+`docker-compose.yml` references the published image, so a fresh deployment is
+just:
+
+```sh
+docker compose pull && docker compose up -d
+docker compose logs -f
+```
+
+Redeploying a new release is the same `pull` + `up -d`; pin a specific version
+by replacing the `image:` tag (e.g. `:1.2.3` or `:<sha>`).
+
+> **Note:** GHCR packages created via `GITHUB_TOKEN` are **private** by
+> default. Either set the package to public (*Package settings → Danger Zone →
+> Change visibility*) after the first successful run, or run
+> `docker login ghcr.io` with a PAT that has `read:packages` on the host.
 
 ## Data persistence
 

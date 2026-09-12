@@ -1,5 +1,7 @@
 services:
   paste:
+    # Pulled from GHCR on the host; `--build` still overrides it for local dev.
+    image: ghcr.io/brocahontaz/paste:latest
     build: .
     ports:
       - "8080:8080"
